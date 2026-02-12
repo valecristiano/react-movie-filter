@@ -13,20 +13,26 @@ const filmList = [
 const genreList = [];
 
 for (const film of filmList) {
-  console.log(film.genre);
   if (!genreList.includes(film.genre)) {
     genreList.push(film.genre);
   }
 }
 
-console.log("genreList", genreList);
-
 export default function App() {
   const [genreSelected, setGenreSelected] = useState("");
+  const [filmSearch, setFilmSearch] = useState("");
 
-  //lista film filtrata per genere selezionato nella select
-  const filteredFilmList = genreSelected === "" ? filmList : filmList.filter((film) => film.genre === genreSelected);
-  console.log("filteredFilmList", filteredFilmList);
+  let filteredFilmList = filmList;
+
+  //filtri per tipo di genere con select e nome del film con input
+
+  if (genreSelected !== "") {
+    filteredFilmList = filmList.filter((film) => film.genre === genreSelected);
+  }
+
+  if (filmSearch !== "") {
+    filteredFilmList = filmList.filter((film) => film.title.toLocaleLowerCase().includes(filmSearch.toLowerCase()));
+  }
 
   return (
     <>
@@ -46,7 +52,7 @@ export default function App() {
         </ul>
       </section>
       {/* select mappata sull'array di generi senza ripetizioni */}
-      <section className="container">
+      <section className="container my-3">
         <label htmlFor="genre-selection">Filtra per genere</label>
         <select value={genreSelected} onChange={(e) => setGenreSelected(e.target.value)} id="genre-selection" className="form-select" aria-label="Default select example">
           <option value="">Seleziona un genere</option>
@@ -56,6 +62,15 @@ export default function App() {
             </option>
           ))}
         </select>
+      </section>
+      {/* sezione ricerca per titolo */}
+      <section className="container my-3">
+        <form action="#">
+          <label className="form-label" htmlFor="title-search">
+            Cerca per titolo:
+          </label>
+          <input value={filmSearch} onChange={(e) => setFilmSearch(e.target.value)} className="form-control" type="text" name="title-search" id="title-search" />
+        </form>
       </section>
     </>
   );
