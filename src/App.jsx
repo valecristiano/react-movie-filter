@@ -25,7 +25,7 @@ export default function App() {
   const [genreSelected, setGenreSelected] = useState("");
 
   //lista film filtrata per genere selezionato nella select
-  const filteredFilmList = filmList.filter((film) => film.genre === genreSelected);
+  const filteredFilmList = genreSelected === "" ? filmList : filmList.filter((film) => film.genre === genreSelected);
   console.log("filteredFilmList", filteredFilmList);
 
   return (
@@ -49,7 +49,7 @@ export default function App() {
       <section className="container">
         <label htmlFor="genre-selection">Filtra per genere</label>
         <select value={genreSelected} onChange={(e) => setGenreSelected(e.target.value)} id="genre-selection" className="form-select" aria-label="Default select example">
-          <option value="seleziona">Seleziona un genere</option>
+          <option value="">Seleziona un genere</option>
           {genreList.map((genre, index) => (
             <option key={index} value={genre}>
               {genre}
