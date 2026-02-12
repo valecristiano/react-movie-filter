@@ -1,3 +1,5 @@
+import { useState, useEffect } from "react";
+
 const filmList = [
   { title: "Inception", genre: "Fantascienza" },
   { title: "Il Padrino", genre: "Thriller" },
@@ -8,6 +10,11 @@ const filmList = [
 ];
 
 export default function App() {
+  const [genreSelected, setGenreSelected] = useState("");
+
+  const filteredFilmList = filmList.filter((film) => film.genre === genreSelected);
+  console.log(filteredFilmList);
+
   return (
     <>
       <header className="bg-light">
@@ -17,7 +24,7 @@ export default function App() {
       </header>
       <section className="container">
         <ul>
-          {filmList.map((film, index) => (
+          {filteredFilmList.map((film, index) => (
             <li key={index}>
               <span>{film.title}</span> <span>{film.genre}</span>
             </li>
@@ -26,9 +33,9 @@ export default function App() {
       </section>
       <section className="container">
         <label htmlFor="genre-selection">Filtra per genere</label>
-        <select id="genre-selection" className="form-select" aria-label="Default select example">
+        <select value={genreSelected} onChange={(e) => setGenreSelected(e.target.value)} id="genre-selection" className="form-select" aria-label="Default select example">
           {filmList.map((film, index) => (
-            <option key={index} value="{index}">
+            <option key={index} value={film.genre}>
               {film.genre}
             </option>
           ))}
